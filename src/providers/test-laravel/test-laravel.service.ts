@@ -19,18 +19,18 @@ export class TestLaravelProvider extends BaseService implements LaravelMethodsAP
   }
   
   index(): Observable<any> {
-    throw new Error("Method not implemented.");
+    return this.get('test');
   }
   show(id: number): Observable<any> {
-    throw new Error("Method not implemented.");
+    return this.get(`test/${id}`)
   }
   store(data: any): Observable<any> {
-    throw new Error("Method not implemented.");
+    return this.post(`test`, data)
   }
   update(data: any): Observable<any> {
-    throw new Error("Method not implemented.");
+    return this.put(`test/${data.id}`, data);
   }
   destroy(id: number): Observable<any> {
-    throw new Error("Method not implemented.");
+    return this.delete(`test/${id}`);
   }
 }
