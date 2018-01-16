@@ -1,0 +1,28 @@
+<ion-content no-padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 col-md-6>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title text-center>
+              Login
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="formLogin" (ngSubmit)="login()">
+              <ion-item>
+                <ion-label floating>User</ion-label>
+                <ion-input type="text" formControlName="user"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label floating>Password</ion-label>
+                <ion-input type="password" formControlName="password"></ion-input>
+              </ion-item>
+              <button type="submit" ion-button large block [disabled]="formLogin.invalid">Enter</button>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
