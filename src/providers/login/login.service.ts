@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { User } from '../../models/user/user.model';
@@ -25,7 +25,15 @@ export class LoginProvider {
    * Login e um metodo de login simple
    */
   login(user: string, password: string): Promise<boolean> {
-    return this.http.post('http://localhost/api/login', { user: user, password: password })
+    let headers = new HttpHeaders({ "Content-Type": "application/json" });
+    return this.http.post(
+      'http://localhost/api/login',
+      {
+        user: user,
+        password: password
+      }, {
+        headers: headers
+      })
       .toPromise()
       .then((user: User) => {
         window.sessionStorage.setItem('token', user.token);
