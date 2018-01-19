@@ -1,7 +1,7 @@
 import { HomePage } from './../home/home';
 import { LoginProvider } from './../../providers/login/login.service';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, AlertButton } from 'ionic-angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 /**
@@ -19,7 +19,13 @@ export class LoginPage {
 
   formLogin: FormGroup;
 
-  constructor(formBuilder: FormBuilder, public loginPvd: LoginProvider, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public alertCtrl: AlertController,
+    formBuilder: FormBuilder,
+    public loginPvd: LoginProvider,
+    public navCtrl: NavController,
+    public navParams: NavParams
+  ) {
     this.formLogin = formBuilder.group({
       user: ['', [Validators.required, Validators.maxLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -34,15 +40,25 @@ export class LoginPage {
     this.loginPvd.login(this.formLogin.controls['user'].value, this.formLogin.controls['password'].value)
       .then((success) => {
         console.log(success);
-        
-        // this.navCtrl.setRoot(HomePage)
+        this.navCtrl.setRoot(HomePage);
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
-        
+        this.showAlert(error.error.message, ['OK'])
       });
-      this.navCtrl.setRoot(HomePage)
-      
+    this.showAlert('Login teste!', [{
+      text: 'OK',
+      handler: () => {
+        this.navCtrl.setRoot(HomePage)
+      }
+    }]).present();
+  }
+
+  showAlert(message: string, buttons: AlertButton[] | string[]) {
+    return this.alertCtrl.create({
+      subTitle: message,
+      buttons: buttons
+    })
   }
 
 }
