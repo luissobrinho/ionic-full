@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -11,6 +12,7 @@ import { User } from '../../models/user/user.model';
 */
 @Injectable()
 export class LoginProvider {
+  user: User;
 
   constructor(public http: HttpClient, public storage: Storage) {
     this.storage.ready()
@@ -24,7 +26,7 @@ export class LoginProvider {
   /**
    * Login e um metodo de login simple
    */
-  login(user: string, password: string): Promise<boolean> {
+  login(user: string, password: string): Observable<any> {
     let headers = new HttpHeaders({ "Content-Type": "application/json" });
     return this.http.post(
       'http://localhost/api/login',
@@ -33,18 +35,7 @@ export class LoginProvider {
         password: password
       }, {
         headers: headers
-      })
-      .toPromise()
-      .then((user: User) => {
-        window.sessionStorage.setItem('token', user.token);
-        return this.storage.set('user', user);
-      })
-      .catch((e) => {
-        if (e.status === 401) {
-          console.log('No Auth');
-        }
-        return false;
-      })
+      });
   }
 
   /**
@@ -54,6 +45,7 @@ export class LoginProvider {
     return this.storage.get('user')
       .then((user) => {
         if (user) {
+          this.user = user;
           return true;
         } else {
           return false;
@@ -71,6 +63,17 @@ export class LoginProvider {
    */
   Auth(): Promise<User> {
     return this.storage.get('user')
+  }
+
+  /**
+   * 
+   * @param User user
+   * 
+   * Salvar o usuário offline para que não precise ficar fazendo login sempre
+   */
+  setUser(user: User) {
+    this.user = user;
+    return this.storage.set('user', user);
   }
 
 
