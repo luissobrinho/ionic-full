@@ -46,6 +46,7 @@ export class LoginProvider {
       .then((user) => {
         if (user) {
           this.user = user;
+          window.sessionStorage.setItem('token', user.token);
           return true;
         } else {
           return false;
