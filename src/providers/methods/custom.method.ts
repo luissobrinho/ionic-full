@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-export interface LaravelMethodsAPI {
+export interface CustomMethodsAPI {
     getAll(): Observable<any>;
     getId(id: number): Observable<any>;
     save(data: any): Observable<any>;
